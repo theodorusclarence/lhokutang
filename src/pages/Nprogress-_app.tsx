@@ -1,31 +1,24 @@
 import { AppProps } from 'next/app';
+// EXPANSION CHANGES: 2 lines below
 import Router from 'next/router';
 import nProgress from 'nprogress';
-import { SWRConfig } from 'swr';
 
 import '@/styles/globals.css';
+// EXPANSION CHANGES: line below
+import '@/styles/nprogress.css';
 
-import axiosClient from '@/lib/axios';
+import Layout from '@/components/layout/Layout';
 
-import DismissableToast from '@/components/DismissableToast';
-
+// EXPANSION CHANGES: 3 lines below
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
 Router.events.on('routeChangeComplete', nProgress.done);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <DismissableToast />
-
-      <SWRConfig
-        value={{
-          fetcher: (url) => axiosClient.get(url).then((res) => res.data),
-        }}
-      >
-        <Component {...pageProps} />
-      </SWRConfig>
-    </>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
   );
 }
 
