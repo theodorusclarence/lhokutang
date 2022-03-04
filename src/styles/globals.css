@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* #region  /**=========== Primary Color =========== */
+  --tw-color-primary-50: 240 253 250;
+  --tw-color-primary-100: 204 251 241;
+  --tw-color-primary-200: 153 246 228;
+  --tw-color-primary-300: 94 234 212;
+  --tw-color-primary-400: 45 212 191;
+  --tw-color-primary-500: 20 184 166;
+  --tw-color-primary-600: 13 148 136;
+  --tw-color-primary-700: 15 118 110;
+  --tw-color-primary-800: 17 94 89;
+  --tw-color-primary-900: 19 78 74;
+  --color-primary-50: rgb(var(--tw-color-primary-50)); /* #f0fdfa */
+  --color-primary-100: rgb(var(--tw-color-primary-100)); /* #ccfbf1 */
+  --color-primary-200: rgb(var(--tw-color-primary-200)); /* #99f6e4 */
+  --color-primary-300: rgb(var(--tw-color-primary-300)); /* #5eead4 */
+  --color-primary-400: rgb(var(--tw-color-primary-400)); /* #2dd4bf */
+  --color-primary-500: rgb(var(--tw-color-primary-500)); /* #14b8a6 */
+  --color-primary-600: rgb(var(--tw-color-primary-600)); /* #0d9488 */
+  --color-primary-700: rgb(var(--tw-color-primary-700)); /* #0f766e */
+  --color-primary-800: rgb(var(--tw-color-primary-800)); /* #115e59 */
+  --color-primary-900: rgb(var(--tw-color-primary-900)); /* #134e4a */
+  /* #endregion  /**======== Primary Color =========== */
+}
+
+@layer base {
+  /* inter var - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: optional;
+    src: url('/fonts/inter-var-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+      U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+      U+2215, U+FEFF, U+FFFD;
+  }
+
+  .cursor-newtab {
+    cursor: url('/images/new-tab.png') 10 10, pointer;
+  }
+
+  /* #region  /**=========== Typography =========== */
+  .h0 {
+    @apply font-primary text-3xl font-bold md:text-5xl;
+  }
+
+  h1,
+  .h1 {
+    @apply font-primary text-2xl font-bold md:text-4xl;
+  }
+
+  h2,
+  .h2 {
+    @apply font-primary text-xl font-bold md:text-3xl;
+  }
+
+  h3,
+  .h3 {
+    @apply font-primary text-lg font-bold md:text-2xl;
+  }
+
+  h4,
+  .h4 {
+    @apply font-primary text-base font-bold md:text-lg;
+  }
+
+  body,
+  .p {
+    @apply font-primary text-sm md:text-base;
+  }
+  /* #endregion  /**======== Typography =========== */
+
+  .layout {
+    /* 1100px */
+    max-width: 68.75rem;
+    @apply mx-auto w-11/12;
+  }
+
+  .bg-dark a.custom-link {
+    @apply border-gray-200 hover:border-gray-200/0;
+  }
+
+  /* Class to adjust with sticky footer */
+  .min-h-main {
+    @apply min-h-[calc(100vh-56px)];
+  }
+}
+
+@layer utilities {
+  .animated-underline {
+    background-image: linear-gradient(#33333300, #33333300),
+      linear-gradient(
+        to right,
+        var(--color-primary-400),
+        var(--color-primary-500)
+      );
+    background-size: 100% 2px, 0 2px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .animated-underline {
+      transition: 0.3s ease;
+      transition-property: background-size, color, background-color,
+        border-color;
+    }
+  }
+  .animated-underline:hover,
+  .animated-underline:focus-visible {
+    background-size: 0 2px, 100% 2px;
+  }
+}
