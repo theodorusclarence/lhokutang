@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app';
 import Router from 'next/router';
+import { SessionProvider } from 'next-auth/react';
 import nProgress from 'nprogress';
 import { SWRConfig } from 'swr';
 
@@ -15,7 +16,7 @@ Router.events.on('routeChangeComplete', nProgress.done);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <SessionProvider>
       <DismissableToast />
 
       <SWRConfig
@@ -25,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <Component {...pageProps} />
       </SWRConfig>
-    </>
+    </SessionProvider>
   );
 }
 
