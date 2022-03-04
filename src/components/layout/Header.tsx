@@ -20,11 +20,11 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className='bg-primary-600'>
-      <nav className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8' aria-label='Top'>
-        <div className='flex w-full items-center justify-between border-b border-primary-500 py-4 lg:border-none'>
+    <header className='bg-white'>
+      <nav className='layout' aria-label='Top'>
+        <div className='flex w-full items-center justify-between border-b border-gray-200 py-4 lg:border-none'>
           <div className='flex items-center'>
-            <UnstyledLink href='/' className='text-lg font-semibold text-white'>
+            <UnstyledLink href='/' className='text-lg font-semibold text-black'>
               LhokUtang
             </UnstyledLink>
             <div className='ml-10 hidden space-x-8 lg:block'>
@@ -32,7 +32,7 @@ export default function Header() {
                 <UnstyledLink
                   key={link.name}
                   href={link.href}
-                  className='text-base font-medium text-white hover:text-primary-50'
+                  className='text-base font-medium text-gray-600 hover:text-gray-500'
                 >
                   {link.name}
                 </UnstyledLink>
@@ -62,7 +62,7 @@ export default function Header() {
             <UnstyledLink
               key={link.name}
               href={link.href}
-              className='text-base font-medium text-white hover:text-primary-50'
+              className='text-base font-medium text-gray-600 hover:text-gray-500'
             >
               {link.name}
             </UnstyledLink>
@@ -85,7 +85,7 @@ function ProfileDropdown() {
               <span className='sr-only'>Open user menu</span>
               {session.user?.image && (
                 <NextImage
-                  className='h-[35px] w-[35px] overflow-hidden rounded-full border-2 border-white'
+                  className='h-[35px] w-[35px] overflow-hidden rounded-full border-2 border-gray-300'
                   src={session.user?.image}
                   width={250}
                   height={250}
