@@ -1,6 +1,6 @@
 import { Menu, Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 
@@ -106,6 +106,7 @@ function ProfileDropdown() {
                       active ? 'bg-gray-100' : '',
                       'block w-full px-4 py-2 text-left text-sm text-gray-700'
                     )}
+                    onClick={() => signOut()}
                   >
                     Logout
                   </button>
