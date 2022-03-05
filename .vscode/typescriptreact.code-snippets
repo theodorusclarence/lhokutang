@@ -76,6 +76,10 @@
       "/* #endregion  /**======== ${1} =========== */"
     ]
   },
+  "JSON Stringify": {
+    "prefix": "jstring",
+    "body": ["<pre>{JSON.stringify(${1:obj}, null, 2)}</pre>"]
+  },
   //#endregion  //*======== Commons ===========
 
   //#region  //*=========== Nextjs ===========

@@ -54,13 +54,14 @@ model VerificationToken {
 }
 
 model Debt {
-  id         String   @id @default(cuid())
-  title      String
-  amount     Int
-  creditorId String
-  debtorId   String
-  type       String?
-  createdAt  DateTime @default(now())
+  id          String   @id @default(cuid())
+  description String
+  amount      Int
+  creditorId  String
+  debtorId    String
+  type        String?
+  date        DateTime
+  createdAt   DateTime @default(now())
 
   creditor User @relation(fields: [creditorId], references: [id])
 }

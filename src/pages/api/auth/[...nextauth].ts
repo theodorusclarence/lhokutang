@@ -1,9 +1,8 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -15,4 +14,10 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    session: async ({ session, user }) => {
+      session.user.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
 });
