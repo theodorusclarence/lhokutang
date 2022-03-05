@@ -9,12 +9,7 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import NextImage from '@/components/NextImage';
 
 /* This example requires Tailwind CSS v2.0+ */
-const navigation = [
-  { name: 'Solutions', href: '#' },
-  { name: 'Pricing', href: '#' },
-  { name: 'Docs', href: '#' },
-  { name: 'Company', href: '#' },
-];
+const navigation = [{ name: 'User List', href: '/list' }];
 
 export default function Header() {
   const { data: session } = useSession();
