@@ -66,7 +66,10 @@ export default function UserTransactionPage() {
               </span>
             </h1>
             {total.status === 'bayar' && (
-              <PrimaryLink className='mt-2' href='/bayar'>
+              <PrimaryLink
+                className='mt-2'
+                href={`/debt/bayar/${destinationUser?.id}`}
+              >
                 Bayar Sekarang
               </PrimaryLink>
             )}

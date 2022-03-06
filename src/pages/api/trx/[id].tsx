@@ -70,7 +70,7 @@ export default async function GetTransactions(
           description,
           date: format(date, 'd MMMM yyyy'),
           type:
-            description === 'Payment'
+            description === 'Pelunasan'
               ? 'payment'
               : user.id === userId
               ? 'piutang'
