@@ -80,6 +80,9 @@ export default function DebtPage() {
         <section className=''>
           <div className='layout min-h-screen py-4'>
             <h1>Request Uang</h1>
+            <p className='mt-1 text-gray-700'>
+              Abis dititipin sesuatu? Minta uangnya biar ga lupa
+            </p>
 
             <FormProvider {...methods}>
               <form
