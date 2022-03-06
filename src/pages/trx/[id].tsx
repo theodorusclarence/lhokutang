@@ -75,32 +75,40 @@ export default function UserTransactionPage() {
             )}
 
             <ul className='mt-6 space-y-3'>
-              {transactions.map(({ id, description, type, amount, date }) => (
-                <li key={id} className='flex items-center justify-between'>
-                  <div className='flex items-center gap-2'>
-                    <UserImage
-                      size='35px'
-                      image={
-                        type === 'utang'
-                          ? destinationUser?.image
-                          : session?.user.image
-                      }
-                    />
-                    <div>
-                      <h3 className='h4 font-medium'>{description}</h3>
-                      <p className='text-sm text-gray-600'>{date}</p>
+              {transactions.map(
+                ({ id, description, type, amount, date, user }) => (
+                  <li key={id} className='flex items-center justify-between'>
+                    <div className='flex items-center gap-2'>
+                      <UserImage
+                        size='35px'
+                        image={
+                          type === 'utang' ||
+                          (type === 'payment' &&
+                            user.id === destinationUser?.id)
+                            ? destinationUser?.image
+                            : session?.user.image
+                        }
+                      />
+                      <div>
+                        <h3 className='h4 font-medium'>{description}</h3>
+                        <p className='text-sm text-gray-600'>{date}</p>
+                      </div>
                     </div>
-                  </div>
-                  <p
-                    className={clsx(
-                      'text-right',
-                      type === 'utang' ? 'text-red-500' : 'text-green-500'
-                    )}
-                  >
-                    {numberWithCommas(amount)}
-                  </p>
-                </li>
-              ))}
+                    <p
+                      className={clsx(
+                        'text-right',
+                        type === 'utang'
+                          ? 'text-red-500'
+                          : type === 'payment'
+                          ? 'text-yellow-600'
+                          : 'text-green-500'
+                      )}
+                    >
+                      {numberWithCommas(amount)}
+                    </p>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </section>

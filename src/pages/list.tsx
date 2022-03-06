@@ -30,7 +30,7 @@ export default function ListPage() {
       <main>
         <section className=''>
           <div className='layout min-h-screen py-4'>
-            <h1>List of users</h1>
+            <h1>Penghuni</h1>
 
             {users.map((user) => (
               <div key={user.id} className='mt-4 flex items-center gap-3'>

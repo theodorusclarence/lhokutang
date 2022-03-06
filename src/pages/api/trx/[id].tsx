@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { format } from 'date-fns';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -11,6 +11,7 @@ export type GetTransactionsApi = {
     description: string;
     date: string;
     type: string;
+    user: User;
   }[];
   total: number;
 };
@@ -69,6 +70,7 @@ export default async function GetTransactions(
           amount,
           description,
           date: format(date, 'd MMMM yyyy'),
+          user,
           type:
             description === 'Pelunasan'
               ? 'payment'
@@ -79,8 +81,11 @@ export default async function GetTransactions(
       );
 
       const total = transactions.reduce(
-        (acc, { amount, type }) =>
-          type === 'utang' ? acc + amount : acc - amount,
+        (acc, { amount, type, user }) =>
+          type === 'utang' ||
+          (type === 'payment' && user.id === destinationUserId)
+            ? acc + amount
+            : acc - amount,
         0
       );
 
