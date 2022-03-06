@@ -69,7 +69,7 @@ export default async function GetTransactions(
           id,
           amount,
           description,
-          date: format(date, 'd MMMM yyyy HH:mm'),
+          date: format(date, 'd MMMM yyyy kk:mm'),
           user,
           type:
             description === 'Pelunasan'
