@@ -6,8 +6,9 @@ import clsxm from '@/lib/clsxm';
 type NextImageProps = (
   | { width: string | number; height: string | number }
   | { layout: 'fill'; width?: string | number; height?: string | number }
-) &
-  ImageProps;
+) & {
+  style?: React.CSSProperties;
+} & ImageProps;
 
 export default function NextImage({
   className,
@@ -16,10 +17,11 @@ export default function NextImage({
   height,
   layout,
   alt,
+  style,
   ...rest
 }: NextImageProps) {
   return (
-    <div className={clsxm(className)}>
+    <div className={clsxm(className)} style={style}>
       <Image
         className='transition-all duration-200'
         src={src}

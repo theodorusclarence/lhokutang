@@ -78,7 +78,7 @@ export default function DebtPage() {
 
       <main>
         <section className=''>
-          <div className='layout min-h-screen py-20'>
+          <div className='layout min-h-screen py-4'>
             <h1>Request Uang</h1>
 
             <FormProvider {...methods}>

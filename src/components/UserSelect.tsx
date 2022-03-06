@@ -40,14 +40,14 @@ export default function UserSelect({
       value={selected}
       onChange={(e: UserSelectPeople) => {
         setSelected(e);
-        setValue('debtor', e.id, { shouldValidate: true });
+        setValue('destinationUserId', e.id, { shouldValidate: true });
       }}
     >
       {({ open }) => (
         <div>
           <div className='hidden'>
             <Input
-              id='debtor'
+              id='destinationUserId'
               label='Minta uang ke'
               validation={{ required: `Field ${label} harus diisi` }}
             />
@@ -59,7 +59,7 @@ export default function UserSelect({
             <Listbox.Button
               className={clsxm(
                 'relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:text-sm',
-                errors.debtor &&
+                errors.destinationUserId &&
                   'border-red-500 focus:border-red-500 focus:ring-red-500'
               )}
             >
@@ -146,9 +146,9 @@ export default function UserSelect({
             </Transition>
 
             <div className='mt-1'>
-              {errors['debtor'] && (
+              {errors['destinationUserId'] && (
                 <span className='text-sm text-red-500'>
-                  {errors['debtor'].message}
+                  {errors['destinationUserId'].message}
                 </span>
               )}
             </div>

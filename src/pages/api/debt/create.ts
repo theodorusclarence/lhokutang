@@ -8,7 +8,7 @@ export default async function create(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { debtor, amount, date, description } = req.body;
+  const { destinationUserId, amount, date, description } = req.body;
 
   if (req.method === 'POST') {
     const session = await getSession({ req });
@@ -16,23 +16,26 @@ export default async function create(
       return res.status(401).send({ message: 'Unauthorized' });
 
     try {
-      await prisma.debt.create({
+      await prisma.transaction.create({
         data: {
           amount,
           date: new Date(date),
           description,
-          debtorId: debtor,
-          creditor: {
+          destinationUserId,
+          user: {
             connect: {
               email: session.user.email,
             },
           },
         },
       });
-      return res.status(201).json({ message: 'Debt created' });
+      return res.status(201).json({ message: 'Transaction created' });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientUnknownRequestError)
         return res.status(500).send(error.message);
+      else {
+        throw error;
+      }
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });

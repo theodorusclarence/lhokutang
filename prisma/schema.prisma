@@ -35,14 +35,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  debts         Debt[]
+  transactions  Transaction[]
 }
 
 model VerificationToken {
@@ -53,15 +53,13 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Debt {
-  id          String   @id @default(cuid())
-  description String
-  amount      Int
-  creditorId  String
-  debtorId    String
-  type        String?
-  date        DateTime
-  createdAt   DateTime @default(now())
+model Transaction {
+  id                String   @id @default(cuid())
+  userId            String
+  amount            Int
+  description       String
+  date              DateTime
+  destinationUserId String
 
-  creditor User @relation(fields: [creditorId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
