@@ -1,4 +1,3 @@
-import format from 'date-fns/format';
 import { useRouter } from 'next/router';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
@@ -59,7 +58,7 @@ export default function BayarPage() {
       amount: data.amount,
       destinationUserId: destinationUser?.id,
       description: 'Pelunasan',
-      date: format(new Date(), 'yyyy-MM-dd'),
+      date: new Date().toISOString(),
     };
     toast
       .promise(axiosClient.post('/api/debt/create', postData), {

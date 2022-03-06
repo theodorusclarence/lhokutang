@@ -10,7 +10,6 @@ import axiosClient from '@/lib/axios';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Button from '@/components/buttons/Button';
-import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
@@ -19,7 +18,7 @@ import UserSelect, { UserSelectPeople } from '@/components/UserSelect';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
 type RequestData = {
-  debtor: string;
+  destinationUserId: string;
   amount: number;
   date: string;
   description: string;
@@ -42,11 +41,18 @@ export default function DebtPage() {
 
   //#region  //*=========== Form Submit ===========
   const onSubmit: SubmitHandler<RequestData> = (data) => {
-    toast.promise(axiosClient.post('/api/debt/create', data), {
-      ...DEFAULT_TOAST_MESSAGE,
-      loading: 'Mengirim request uang...',
-      success: 'Request uang berhasil dikirim',
-    });
+    toast
+      .promise(
+        axiosClient.post('/api/debt/create', { ...data, date: new Date() }),
+        {
+          ...DEFAULT_TOAST_MESSAGE,
+          loading: 'Mengirim request uang...',
+          success: 'Request uang berhasil dikirim',
+        }
+      )
+      .then(() => {
+        router.push(`/trx/${data.destinationUserId}`);
+      });
   };
   //#endregion  //*======== Form Submit ===========
 
@@ -116,16 +122,6 @@ export default function DebtPage() {
                     <option value={description} key={description} />
                   ))}
                 </datalist>
-                <DatePicker
-                  id='date'
-                  label='Tanggal'
-                  validation={{
-                    required: 'Tanggal harus diisi',
-                    valueAsDate: true,
-                  }}
-                  defaultValue='2022-03-05'
-                  placeholder='dd/mm/yyyy'
-                />
                 <div className='flex flex-wrap gap-4'>
                   <Button type='submit'>Submit</Button>
                 </div>
