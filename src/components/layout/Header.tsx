@@ -1,8 +1,11 @@
 import { Menu, Transition } from '@headlessui/react';
 import clsx from 'clsx';
+import { useRouter } from 'next/router';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import { FcGoogle } from 'react-icons/fc';
+
+import clsxm from '@/lib/clsxm';
 
 import Button from '@/components/buttons/Button';
 import UnstyledLink from '@/components/links/UnstyledLink';
@@ -10,12 +13,15 @@ import NextImage from '@/components/NextImage';
 
 /* This example requires Tailwind CSS v2.0+ */
 const navigation = [
-  { name: 'Lihat (Pi)utang', href: '/list' },
-  { name: 'Request Uang', href: '/debt/request' },
+  { name: 'Lihat (Pi)utang', href: '/list', role: 'authenticated' },
+  { name: 'Request Uang', href: '/debt/request', role: 'authenticated' },
+  { name: 'Split Bill', href: '/debt/split', role: 'authenticated' },
+  { name: 'Lihat Penghuni', href: '/list', role: 'unauthenticated' },
 ];
 
 export default function Header() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const { asPath } = useRouter();
 
   return (
     <header className='bg-white'>
@@ -30,7 +36,12 @@ export default function Header() {
                 <UnstyledLink
                   key={link.name}
                   href={link.href}
-                  className='text-base font-medium text-gray-600 hover:text-gray-500'
+                  className={clsxm(
+                    'text-base font-medium text-gray-600 hover:text-gray-500',
+                    link.href === asPath && 'text-primary-700',
+                    !(link.role === status || link.role === 'public') &&
+                      'hidden'
+                  )}
                 >
                   {link.name}
                 </UnstyledLink>
@@ -60,7 +71,11 @@ export default function Header() {
             <UnstyledLink
               key={link.name}
               href={link.href}
-              className='text-base font-medium text-gray-600 hover:text-gray-500'
+              className={clsxm(
+                'text-base font-medium text-gray-600 hover:text-gray-500',
+                link.href === asPath && 'text-primary-700',
+                !(link.role === status || link.role === 'public') && 'hidden'
+              )}
             >
               {link.name}
             </UnstyledLink>

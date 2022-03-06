@@ -24,6 +24,6 @@ export function openGraph({
   }`;
 }
 
-export function numberWithCommas(x: string | number): string {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+export function numberWithCommas(x: number): string {
+  return Math.floor(x).toLocaleString();
 }

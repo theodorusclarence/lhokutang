@@ -7,21 +7,23 @@ import toast from 'react-hot-toast';
 import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
+import { numberWithCommas } from '@/lib/helper';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/Input';
+import UserCheckboxes from '@/components/forms/UserCheckboxes';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
-import UserSelect, { UserSelectPeople } from '@/components/UserSelect';
+import { UserSelectPeople } from '@/components/UserSelect';
 
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
+import { CreateManyBody } from '@/pages/api/debt/create-many';
 
 type RequestData = {
-  destinationUserId: string;
+  destinationUserId: Record<string, boolean>;
   amount: number;
-  date: string;
   description: string;
 };
 
@@ -39,31 +41,10 @@ export default function DebtPage() {
   const methods = useForm<RequestData>({
     mode: 'onTouched',
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, watch } = methods;
   //#endregion  //*======== Form ===========
 
-  //#region  //*=========== Form Submit ===========
-  const onSubmit: SubmitHandler<RequestData> = (data) => {
-    toast
-      .promise(
-        axiosClient.post('/api/debt/create', { ...data, date: new Date() }),
-        {
-          ...DEFAULT_TOAST_MESSAGE,
-          loading: 'Mengirim request uang...',
-          success: 'Request uang berhasil dikirim',
-        }
-      )
-      .then(() => {
-        router.push(`/trx/${data.destinationUserId}`);
-      });
-  };
-  //#endregion  //*======== Form Submit ===========
-
-  //#region  //*=========== User Select ===========
-  const [userSelected, setUserSelected] = React.useState<UserSelectPeople>({
-    id: '',
-    name: 'Pick a user',
-  });
+  //#region  //*=========== User Select ============
   const { data: userData } = useWithToast(
     useSWR<{ users: User[] }>('/api/users'),
     {
@@ -81,6 +62,43 @@ export default function DebtPage() {
     : [];
   //#endregion  //*======== User Select ===========
 
+  //#region  //*=========== Split Bill Logic ===========
+  const { destinationUserId: destinationUserIdObject } = watch();
+  const totalPerson = destinationUserIdObject
+    ? Object.values(destinationUserIdObject).filter((bool) => bool).length
+    : 0;
+  const amount = watch('amount');
+
+  const amountPerPerson = Math.floor(amount / (totalPerson + 1));
+  //#endregion  //*======== Split Bill Logic ===========
+
+  //#region  //*=========== Form Submit ===========
+  const onSubmit: SubmitHandler<RequestData> = (data) => {
+    // If no one checked
+    if (totalPerson === 0) {
+      return toast.error('Silakan pilih minimal 1 orang');
+    }
+
+    const parsedData: CreateManyBody = {
+      amountPerPerson,
+      destinationUserIdList: Object.entries(destinationUserIdObject)
+        .filter(([, bool]) => bool)
+        .map(([user]) => user),
+      description: data.description,
+      date: new Date(),
+    };
+    toast
+      .promise(axiosClient.post('/api/debt/create-many', parsedData), {
+        ...DEFAULT_TOAST_MESSAGE,
+        loading: 'Mengirim request uang...',
+        success: 'Request uang berhasil dikirim',
+      })
+      .then(() => {
+        router.push(`/trx/${parsedData.destinationUserIdList[0]}`);
+      });
+  };
+  //#endregion  //*======== Form Submit ===========
+
   return (
     <Layout>
       <Seo templateTitle='Add Debt' />
@@ -88,22 +106,14 @@ export default function DebtPage() {
       <main>
         <section className=''>
           <div className='layout min-h-screen py-4'>
-            <h1>Request Uang</h1>
-            <p className='mt-1 text-gray-700'>
-              Abis dititipin sesuatu? Minta uangnya biar ga lupa
-            </p>
+            <h1>Split Bill</h1>
+            <p className='mt-1 text-gray-700'>Bagi" pesanan dengan mudah</p>
 
             <FormProvider {...methods}>
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className='mt-4 max-w-sm space-y-3'
               >
-                <UserSelect
-                  label='Minta uang ke'
-                  selected={userSelected}
-                  setSelected={setUserSelected}
-                  people={users}
-                />
                 <Input
                   id='amount'
                   label='Nominal'
@@ -112,7 +122,9 @@ export default function DebtPage() {
                     required: 'Nominal harus diisi',
                     valueAsNumber: true,
                   }}
+                  helperText='Total akan dibagi dengan jumlah orang dan kamu'
                 />
+                <UserCheckboxes users={users} id='destinationUserId' />
                 <Input
                   id='description'
                   label='Keterangan'
@@ -125,6 +137,21 @@ export default function DebtPage() {
                     <option value={description} key={description} />
                   ))}
                 </datalist>
+
+                <div className='!mt-8'>
+                  <h3>Rincian</h3>
+                  <p>Pembagian: Kamu + {totalPerson} orang</p>
+                  <p>
+                    Per orangnya jadi{' '}
+                    <strong>
+                      Rp{' '}
+                      {!isNaN(amountPerPerson)
+                        ? numberWithCommas(amountPerPerson)
+                        : 0}
+                    </strong>
+                  </p>
+                </div>
+
                 <div className='flex flex-wrap gap-4'>
                   <Button isLoading={isLoading} type='submit'>
                     Submit

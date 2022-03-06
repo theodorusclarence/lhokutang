@@ -80,6 +80,11 @@
     "prefix": "jstring",
     "body": ["<pre>{JSON.stringify(${1:obj}, null, 2)}</pre>"]
   },
+  "ClassName": {
+    "prefix": "class",
+    "scope": "javascript, typescript, javascriptreact, typescriptreact",
+    "body": ["className='$0'"]
+  },
   //#endregion  //*======== Commons ===========
 
   //#region  //*=========== Nextjs ===========

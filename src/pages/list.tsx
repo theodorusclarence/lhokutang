@@ -20,8 +20,7 @@ export default function ListPage() {
     }
   );
   const users =
-    userData?.users.filter((user) => user.name !== sessionData?.user?.name) ??
-    [];
+    userData?.users.filter((user) => user.id !== sessionData?.user?.id) ?? [];
 
   return (
     <Layout>
