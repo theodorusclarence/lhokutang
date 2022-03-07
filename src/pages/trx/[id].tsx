@@ -1,10 +1,12 @@
 import { User } from '@prisma/client';
 import clsx from 'clsx';
+import format from 'date-fns/format';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import useSWR from 'swr';
 
+import { DATE_FORMAT } from '@/lib/date';
 import { numberWithCommas } from '@/lib/helper';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -13,7 +15,7 @@ import PrimaryLink from '@/components/links/PrimaryLink';
 import Seo from '@/components/Seo';
 import UserImage from '@/components/UserImage';
 
-import { GetTransactionsApi } from '../api/trx/[id]';
+import { GetTransactionsApi } from '@/pages/api/trx/[id]';
 
 export default function UserTransactionPage() {
   //#region  //*=========== Get Route Param ===========
@@ -23,11 +25,15 @@ export default function UserTransactionPage() {
 
   const { data: session } = useSession();
 
-  const { data: destinationUser } = useSWR<User>(`/api/user/${userId}`);
+  const { data: destinationUser } = useSWR<User>(
+    userId ? `/api/user/${userId}` : undefined
+  );
 
   const { data: transactionData } = useWithToast(
     useSWR<GetTransactionsApi>(
-      `/api/trx/${session?.user.id}?destinationUserId=${destinationUser?.id}`
+      session?.user.id && destinationUser?.id
+        ? `/api/trx/${session?.user.id}?destinationUserId=${destinationUser?.id}`
+        : undefined
     )
   );
   const transactions = transactionData?.transactions ?? [];
@@ -91,7 +97,12 @@ export default function UserTransactionPage() {
                       />
                       <div>
                         <h3 className='h4 font-medium'>{description}</h3>
-                        <p className='text-sm text-gray-600'>{date}</p>
+                        <p className='text-sm text-gray-600'>
+                          {format(
+                            new Date(date),
+                            DATE_FORMAT.FULL_DATE_HOUR_MINUTE
+                          )}
+                        </p>
                       </div>
                     </div>
                     <p

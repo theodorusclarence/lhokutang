@@ -1,5 +1,4 @@
 import { Prisma, User } from '@prisma/client';
-import { format } from 'date-fns';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { prisma } from '@/lib/prisma';
@@ -9,7 +8,7 @@ export type GetTransactionsApi = {
     id: string;
     amount: number;
     description: string;
-    date: string;
+    date: Date;
     type: string;
     user: User;
   }[];
@@ -69,7 +68,7 @@ export default async function GetTransactions(
           id,
           amount,
           description,
-          date: format(date, 'd MMMM yyyy kk:mm'),
+          date,
           user,
           type:
             description === 'Pelunasan'
