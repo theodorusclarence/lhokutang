@@ -5,6 +5,7 @@ import nProgress from 'nprogress';
 import { SWRConfig } from 'swr';
 
 import '@/styles/globals.css';
+import '@/styles/nprogress.css';
 
 import axiosClient from '@/lib/axios';
 
