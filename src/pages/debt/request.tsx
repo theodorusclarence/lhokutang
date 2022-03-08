@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
+import { cleanNumber } from '@/lib/helper';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -20,7 +21,7 @@ import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
 type RequestData = {
   destinationUserId: string;
-  amount: number;
+  amount: string;
   date: string;
   description: string;
 };
@@ -39,20 +40,23 @@ export default function DebtPage() {
   const methods = useForm<RequestData>({
     mode: 'onTouched',
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, setValue } = methods;
   //#endregion  //*======== Form ===========
 
   //#region  //*=========== Form Submit ===========
   const onSubmit: SubmitHandler<RequestData> = (data) => {
+    const parsedData = {
+      ...data,
+      amount: cleanNumber(data.amount),
+      date: new Date(),
+    };
+
     toast
-      .promise(
-        axiosClient.post('/api/debt/create', { ...data, date: new Date() }),
-        {
-          ...DEFAULT_TOAST_MESSAGE,
-          loading: 'Mengirim request uang...',
-          success: 'Request uang berhasil dikirim',
-        }
-      )
+      .promise(axiosClient.post('/api/debt/create', parsedData), {
+        ...DEFAULT_TOAST_MESSAGE,
+        loading: 'Mengirim request uang...',
+        success: 'Request uang berhasil dikirim',
+      })
       .then(() => {
         router.push(`/trx/${data.destinationUserId}`);
       });
@@ -107,10 +111,15 @@ export default function DebtPage() {
                 <Input
                   id='amount'
                   label='Nominal'
-                  pattern='[0-9]*'
+                  pattern='[,0-9]*'
+                  onChange={(e) => {
+                    setValue(
+                      'amount',
+                      cleanNumber(e.target.value).toLocaleString()
+                    );
+                  }}
                   validation={{
                     required: 'Nominal harus diisi',
-                    valueAsNumber: true,
                   }}
                 />
                 <Input

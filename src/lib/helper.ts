@@ -27,3 +27,7 @@ export function openGraph({
 export function numberWithCommas(x: number): string {
   return Math.floor(x).toLocaleString();
 }
+
+export function cleanNumber(str: string): number {
+  return Number(str?.replace(/[^0-9]+/g, ''));
+}

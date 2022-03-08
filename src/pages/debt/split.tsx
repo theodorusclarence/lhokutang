@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
-import { numberWithCommas } from '@/lib/helper';
+import { cleanNumber, numberWithCommas } from '@/lib/helper';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -23,7 +23,7 @@ import { CreateManyBody } from '@/pages/api/debt/create-many';
 
 type RequestData = {
   destinationUserId: Record<string, boolean>;
-  amount: number;
+  amount: string;
   description: string;
 };
 
@@ -41,7 +41,7 @@ export default function DebtPage() {
   const methods = useForm<RequestData>({
     mode: 'onTouched',
   });
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, setValue } = methods;
   //#endregion  //*======== Form ===========
 
   //#region  //*=========== User Select ============
@@ -67,7 +67,8 @@ export default function DebtPage() {
   const totalPerson = destinationUserIdObject
     ? Object.values(destinationUserIdObject).filter((bool) => bool).length
     : 0;
-  const amount = watch('amount');
+
+  const amount = cleanNumber(watch('amount'));
 
   const amountPerPerson = Math.floor(amount / (totalPerson + 1));
   //#endregion  //*======== Split Bill Logic ===========
@@ -117,10 +118,15 @@ export default function DebtPage() {
                 <Input
                   id='amount'
                   label='Nominal'
-                  pattern='[0-9]*'
+                  pattern='[,0-9]*'
+                  onChange={(e) => {
+                    setValue(
+                      'amount',
+                      cleanNumber(e.target.value).toLocaleString()
+                    );
+                  }}
                   validation={{
                     required: 'Nominal harus diisi',
-                    valueAsNumber: true,
                   }}
                   helperText='Total akan dibagi dengan jumlah orang dan kamu'
                 />
