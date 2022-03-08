@@ -113,6 +113,7 @@ export default function DebtPage() {
                   id='amount'
                   label='Nominal'
                   pattern='[,0-9]*'
+                  inputMode='decimal'
                   onChange={(e) => {
                     setValue(
                       'amount',
