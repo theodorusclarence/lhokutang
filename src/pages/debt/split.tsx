@@ -18,6 +18,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import { UserSelectPeople } from '@/components/UserSelect';
 
+import { descriptions } from '@/constant/descriptionList';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 import { CreateManyBody } from '@/pages/api/debt/create-many';
 
@@ -171,5 +172,3 @@ export default function DebtPage() {
     </Layout>
   );
 }
-
-const descriptions = ['Bu Lala', 'Kane', 'Kopi'];
