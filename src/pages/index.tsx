@@ -1,4 +1,5 @@
-import { signIn, useSession } from 'next-auth/react';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { getSession, signIn } from 'next-auth/react';
 import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
@@ -6,9 +7,9 @@ import UnderlineLink from '@/components/links/UnderlineLink';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 
-export default function HomePage() {
-  const { data: session } = useSession();
-
+export default function HomePage({
+  session,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -73,3 +74,22 @@ export default function HomePage() {
     </Layout>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/list',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};
