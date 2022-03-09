@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 
 import { prisma } from '@/lib/prisma';
 
@@ -8,6 +9,10 @@ export default async function GetSingleUser(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
+    const session = await getSession({ req });
+    if (!session?.user?.email)
+      return res.status(401).send({ message: 'Unauthorized' });
+
     const userId = req.query.id;
 
     if (typeof userId !== 'string') {
