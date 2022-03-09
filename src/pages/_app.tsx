@@ -18,7 +18,6 @@ Router.events.on('routeChangeComplete', nProgress.done);
 
 type AppAuthProps = AppProps & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // eslint-disable-next-line @typescript-eslint/ban-types
   Component: Pick<AppProps, 'Component'> & Partial<{ auth: boolean }>;
 };
 
