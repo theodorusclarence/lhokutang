@@ -27,6 +27,8 @@ type RequestData = {
   description: string;
 };
 
+DebtPage.auth = true;
+
 export default function DebtPage() {
   const { status, data: sessionData } = useSession();
   const router = useRouter();

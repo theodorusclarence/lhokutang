@@ -23,6 +23,8 @@ type BayarData = {
   amount: number;
 };
 
+BayarPage.auth = true;
+
 export default function BayarPage() {
   //#region  //*=========== Get Route Param ===========
   const router = useRouter();

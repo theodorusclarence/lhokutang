@@ -20,6 +20,8 @@ type ProfileData = {
   phoneNumber: string;
 };
 
+ProfilePage.auth = true;
+
 export default function ProfilePage() {
   //#region  //*=========== Get Route Param ===========
   const router = useRouter();

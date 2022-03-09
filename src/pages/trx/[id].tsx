@@ -17,6 +17,8 @@ import UserImage from '@/components/UserImage';
 
 import { GetTransactionsApi } from '@/pages/api/trx/[id]';
 
+UserTransactionPage.auth = true;
+
 export default function UserTransactionPage() {
   //#region  //*=========== Get Route Param ===========
   const router = useRouter();

@@ -28,7 +28,9 @@ type RequestData = {
   description: string;
 };
 
-export default function DebtPage() {
+DebtSplit.auth = true;
+
+export default function DebtSplit() {
   const { status, data: sessionData } = useSession();
   const router = useRouter();
 

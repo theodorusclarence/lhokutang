@@ -16,7 +16,7 @@ const navigation = [
   { name: 'Lihat (Pi)utang', href: '/list', role: 'authenticated' },
   { name: 'Request Uang', href: '/debt/request', role: 'authenticated' },
   { name: 'Split Bill', href: '/debt/split', role: 'authenticated' },
-  { name: 'Lihat Penghuni', href: '/list', role: 'unauthenticated' },
+  // { name: 'Lihat Penghuni', href: '/list', role: 'unauthenticated' },
 ];
 
 export default function Header() {

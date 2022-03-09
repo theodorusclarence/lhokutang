@@ -13,6 +13,8 @@ import PrimaryLink from '@/components/links/PrimaryLink';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 
+ListPage.auth = true;
+
 export default function ListPage() {
   const { data: sessionData } = useSession();
   const { data: userData } = useWithToast(

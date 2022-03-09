@@ -10,12 +10,19 @@ import '@/styles/nprogress.css';
 import axiosClient from '@/lib/axios';
 
 import DismissableToast from '@/components/DismissableToast';
+import FullScreenLoading from '@/container/FullScreenLoading';
 
 Router.events.on('routeChangeStart', nProgress.start);
 Router.events.on('routeChangeError', nProgress.done);
 Router.events.on('routeChangeComplete', nProgress.done);
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppAuthProps = AppProps & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  Component: Pick<AppProps, 'Component'> & Partial<{ auth: boolean }>;
+};
+
+function MyApp({ Component, pageProps }: AppAuthProps) {
   return (
     <SessionProvider>
       <DismissableToast />
@@ -25,7 +32,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           fetcher: (url) => axiosClient.get(url).then((res) => res.data),
         }}
       >
-        <Component {...pageProps} />
+        {Component.auth ? (
+          <FullScreenLoading>
+            <Component {...pageProps} />
+          </FullScreenLoading>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </SWRConfig>
     </SessionProvider>
   );
