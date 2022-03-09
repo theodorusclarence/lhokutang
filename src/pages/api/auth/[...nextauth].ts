@@ -19,5 +19,29 @@ export default NextAuth({
       session.user.id = user.id;
       return Promise.resolve(session);
     },
+    signIn: async ({ user }) => {
+      if (!user.email) return false;
+
+      // Only allow email within the whitelist
+      if (emailWhitelist.includes(user.email)) return true;
+      return false;
+    },
   },
 });
+
+const emailWhitelist = [
+  'ppdbultimate@gmail.com',
+  'theodorusclarence@gmail.com',
+  'adhwamaharika@gmail.com',
+  'carlonugroho01@gmail.com',
+  'jeremiakeloko@gmail.com',
+  'ferdinand.parulian@gmail.com',
+  'ivan.19400016@gmail.com',
+  'billharit@gmail.com',
+  'philippurba.pp@gmail.com',
+  'rayhanalifa@googlemail.com',
+  'kanda.wibisanan@gmail.com',
+  'stevearmando@gmail.com',
+  'radityarobert@gmail.com',
+  'sihombingcharminuel@gmail.com',
+];
