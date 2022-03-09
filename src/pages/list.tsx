@@ -2,12 +2,14 @@ import { User } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { FaMoneyBillWave } from 'react-icons/fa';
+import { HiPhone } from 'react-icons/hi';
 import useSWR from 'swr';
 
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
+import PrimaryLink from '@/components/links/PrimaryLink';
 import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 
@@ -22,6 +24,10 @@ export default function ListPage() {
   const users =
     userData?.users.filter((user) => user.id !== sessionData?.user?.id) ?? [];
 
+  const currentUser = userData?.users.find(
+    (user) => user.id === sessionData?.user.id
+  );
+
   return (
     <Layout>
       <Seo templateTitle='List' />
@@ -30,6 +36,15 @@ export default function ListPage() {
         <section className=''>
           <div className='layout min-h-screen py-4'>
             <h1>Penghuni</h1>
+
+            {currentUser?.phoneNumber === null && (
+              <div className='mt-1 text-gray-700'>
+                <p>
+                  Anda masih belum memasukkan nomor telepon, silakan menambahkan
+                  pada <PrimaryLink href='/profile'>link ini</PrimaryLink>
+                </p>
+              </div>
+            )}
 
             {users.map((user) => (
               <div key={user.id} className='mt-4 flex items-center gap-3'>
@@ -46,7 +61,10 @@ export default function ListPage() {
                 )}
                 <div>
                   <h2 className='h4'>{user.name}</h2>
-                  <p>{user.email}</p>
+                  <p className='flex items-center gap-1 text-gray-700'>
+                    <HiPhone />
+                    {user.phoneNumber ?? '-'}
+                  </p>
                 </div>
                 <ButtonLink
                   href={`/trx/${user.id}`}
