@@ -1,20 +1,16 @@
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { User } from 'next-auth';
 
 import { prisma } from '@/lib/prisma';
+import requireSession from '@/lib/require-session.server';
 
-export default async function create(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default requireSession(create);
+
+async function create(req: NextApiRequest, res: NextApiResponse, user: User) {
   const { destinationUserId, amount, date, description } = req.body;
 
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-    if (!session?.user?.email)
-      return res.status(401).send({ message: 'Unauthorized' });
-
     try {
       await prisma.transaction.create({
         data: {
@@ -22,13 +18,10 @@ export default async function create(
           date: new Date(date),
           description,
           destinationUserId,
-          user: {
-            connect: {
-              email: session.user.email,
-            },
-          },
+          userId: user.id,
         },
       });
+
       return res.status(201).json({ message: 'Transaction created' });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientUnknownRequestError)
@@ -38,6 +31,6 @@ export default async function create(
       }
     }
   } else {
-    res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

@@ -1,21 +1,20 @@
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { User } from 'next-auth';
 
 import { prisma } from '@/lib/prisma';
+import requireSession from '@/lib/require-session.server';
 
-export default async function phone(req: NextApiRequest, res: NextApiResponse) {
+export default requireSession(phone);
+
+async function phone(req: NextApiRequest, res: NextApiResponse, user: User) {
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-    if (!session?.user?.id)
-      return res.status(401).send({ message: 'Unauthorized' });
-
     const { phoneNumber } = req.body;
 
     try {
       await prisma.user.update({
         where: {
-          id: session.user.id,
+          id: user.id,
         },
         data: {
           phoneNumber: phoneNumber as string,
