@@ -21,7 +21,7 @@ export default function ListPage() {
   const { data: summaryData } = useWithToast(
     useSWR<{ summary: ({ amount: number } & User)[] }>('/api/trx/summary'),
     {
-      loading: 'getting user data',
+      loading: 'Menghitung utang-piutang anda...',
     }
   );
   const users =
