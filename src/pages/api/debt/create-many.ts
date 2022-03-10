@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { User } from 'next-auth';
 
 import { prisma } from '@/lib/prisma';
+import requireSession from '@/lib/require-session.server';
 
 export type CreateManyBody = {
   destinationUserIdList: string[];
@@ -11,18 +12,13 @@ export type CreateManyBody = {
   description: string;
 };
 
-export default async function create(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default requireSession(handler);
+
+async function handler(req: NextApiRequest, res: NextApiResponse, user: User) {
   const { destinationUserIdList, amountPerPerson, date, description } =
     req.body;
 
   if (req.method === 'POST') {
-    const session = await getSession({ req });
-    if (!session?.user?.email)
-      return res.status(401).send({ message: 'Unauthorized' });
-
     try {
       await prisma.transaction.createMany({
         data: (destinationUserIdList as string[]).map((destinationUserId) => ({
@@ -30,7 +26,7 @@ export default async function create(
           date: new Date(date),
           description,
           destinationUserId,
-          userId: session.user.id,
+          userId: user.id,
         })),
       });
       return res.status(201).json({ message: 'Transactions created' });

@@ -1,8 +1,8 @@
 import { Prisma, User } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 
 import { prisma } from '@/lib/prisma';
+import requireSession from '@/lib/require-session.server';
 
 export type GetTransactionsApi = {
   transactions: {
@@ -16,15 +16,10 @@ export type GetTransactionsApi = {
   total: number;
 };
 
-export default async function GetTransactions(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === 'GET') {
-    const session = await getSession({ req });
-    if (!session?.user?.email)
-      return res.status(401).send({ message: 'Unauthorized' });
+export default requireSession(GetTransactions);
 
+async function GetTransactions(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'GET') {
     const userId = req.query.id;
 
     if (typeof userId !== 'string') {
