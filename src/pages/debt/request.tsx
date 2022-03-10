@@ -55,7 +55,7 @@ export default function DebtPage() {
     };
 
     toast
-      .promise(axiosClient.post('/api/debt/create', parsedData), {
+      .promise(axiosClient.post('/api/trx/create', parsedData), {
         ...DEFAULT_TOAST_MESSAGE,
         loading: 'Mengirim request uang...',
         success: 'Request uang berhasil dikirim',
@@ -72,7 +72,7 @@ export default function DebtPage() {
     name: 'Pick a user',
   });
   const { data: userData } = useWithToast(
-    useSWR<{ users: User[] }>('/api/users'),
+    useSWR<{ users: User[] }>('/api/user'),
     {
       loading: 'getting user data',
     }

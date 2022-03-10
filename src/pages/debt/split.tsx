@@ -20,7 +20,7 @@ import { UserSelectPeople } from '@/components/UserSelect';
 
 import { descriptions } from '@/constant/descriptionList';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
-import { CreateManyBody } from '@/pages/api/debt/create-many';
+import { CreateManyBody } from '@/pages/api/trx/create-many';
 
 type RequestData = {
   destinationUserId: Record<string, boolean>;
@@ -49,7 +49,7 @@ export default function DebtSplit() {
 
   //#region  //*=========== User Select ============
   const { data: userData } = useWithToast(
-    useSWR<{ users: User[] }>('/api/users'),
+    useSWR<{ users: User[] }>('/api/user'),
     {
       loading: 'getting user data',
     }
@@ -92,7 +92,7 @@ export default function DebtSplit() {
       date: new Date(),
     };
     toast
-      .promise(axiosClient.post('/api/debt/create-many', parsedData), {
+      .promise(axiosClient.post('/api/trx/create-many', parsedData), {
         ...DEFAULT_TOAST_MESSAGE,
         loading: 'Mengirim request uang...',
         success: 'Request uang berhasil dikirim',
