@@ -63,7 +63,10 @@ async function summary(req: NextApiRequest, res: NextApiResponse, user: User) {
           }
         } else {
           acc[current.destinationUser] = {
-            amount: current.amount,
+            amount:
+              current.type === 'pay' || current.type === 'utang'
+                ? current.amount
+                : -current.amount,
           };
         }
 
