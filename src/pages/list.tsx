@@ -18,7 +18,7 @@ ListPage.auth = true;
 export default function ListPage() {
   const { data: sessionData } = useSession();
   const { data: userData } = useWithToast(
-    useSWR<{ users: User[] }>('/api/users'),
+    useSWR<{ users: User[] }>('/api/user'),
     {
       loading: 'getting user data',
     }

@@ -63,7 +63,7 @@ export default function BayarPage() {
       date: new Date().toISOString(),
     };
     toast
-      .promise(axiosClient.post('/api/debt/create', postData), {
+      .promise(axiosClient.post('/api/trx/create', postData), {
         ...DEFAULT_TOAST_MESSAGE,
         loading: 'Mengirim pembayaran...',
         success: 'Pembayaran berhasil dicatat',
