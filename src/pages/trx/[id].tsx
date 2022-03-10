@@ -4,6 +4,7 @@ import format from 'date-fns/format';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
+import { HiPhone } from 'react-icons/hi';
 import useSWR from 'swr';
 
 import { DATE_FORMAT } from '@/lib/date';
@@ -58,7 +59,10 @@ export default function UserTransactionPage() {
               <UserImage size='48px' image={destinationUser?.image} />
               <div>
                 <h2 className='h4'>{destinationUser?.name ?? 'Loading...'}</h2>
-                <p>{destinationUser?.email ?? ''}</p>
+                <p className='flex items-center gap-1 text-gray-700'>
+                  <HiPhone />
+                  {destinationUser?.phoneNumber ?? '-'}
+                </p>
               </div>
             </header>
 

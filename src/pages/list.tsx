@@ -2,9 +2,10 @@ import { User } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { FaMoneyBillWave } from 'react-icons/fa';
-import { HiPhone } from 'react-icons/hi';
 import useSWR from 'swr';
 
+import clsxm from '@/lib/clsxm';
+import { numberWithCommas } from '@/lib/helper';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Layout from '@/components/layout/Layout';
@@ -17,16 +18,17 @@ ListPage.auth = true;
 
 export default function ListPage() {
   const { data: sessionData } = useSession();
-  const { data: userData } = useWithToast(
-    useSWR<{ users: User[] }>('/api/user'),
+  const { data: summaryData } = useWithToast(
+    useSWR<{ summary: ({ amount: number } & User)[] }>('/api/trx/summary'),
     {
       loading: 'getting user data',
     }
   );
   const users =
-    userData?.users.filter((user) => user.id !== sessionData?.user?.id) ?? [];
+    summaryData?.summary.filter((user) => user.id !== sessionData?.user?.id) ??
+    [];
 
-  const currentUser = userData?.users.find(
+  const currentUser = summaryData?.summary.find(
     (user) => user.id === sessionData?.user.id
   );
 
@@ -63,9 +65,22 @@ export default function ListPage() {
                 )}
                 <div>
                   <h2 className='h4'>{user.name}</h2>
-                  <p className='flex items-center gap-1 text-gray-700'>
-                    <HiPhone />
-                    {user.phoneNumber ?? '-'}
+                  <p className='flex items-center gap-1 text-sm text-gray-700'>
+                    {user.amount ? (
+                      <span
+                        className={clsxm('font-medium text-green-600', {
+                          'text-green-600': user.amount > 0,
+                          'text-red-600': user.amount < 0,
+                        })}
+                      >
+                        {user.amount > 0 ? '🤑' : '😭'}{' '}
+                        {user.amount > 0
+                          ? numberWithCommas(user.amount)
+                          : numberWithCommas(-user.amount) ?? 0}
+                      </span>
+                    ) : (
+                      '👍 Lunas'
+                    )}
                   </p>
                 </div>
                 <ButtonLink
