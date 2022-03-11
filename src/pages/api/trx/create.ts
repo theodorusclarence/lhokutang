@@ -40,7 +40,7 @@ async function create(req: NextApiRequest, res: NextApiResponse, user: User) {
           user.id
         }`;
         html = `
-        <p>Hai! <strong>${
+        <p>Hai!</p><p><strong>${
           user.name
         }</strong> baru saja melakukan pelunasan sebesar <strong>
           Rp ${numberWithCommas(amount)}
@@ -58,7 +58,7 @@ async function create(req: NextApiRequest, res: NextApiResponse, user: User) {
           user.id
         }`;
         html = `
-          <p>Hai! <strong>${
+          <p>Hai!</p><p><strong>${
             user.name
           }</strong> baru saja melakukan request uang sebesar <strong>
             Rp ${numberWithCommas(amount)}

@@ -44,7 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: User) {
           user.id
         }`;
         const html = `
-          <p>Hai! <strong>${
+          <p>Hai!</p><p><strong>${
             user.name
           }</strong> baru saja melakukan request uang sebesar <strong>
             Rp ${numberWithCommas(amountPerPerson)}
