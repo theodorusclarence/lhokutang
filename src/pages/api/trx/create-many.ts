@@ -2,6 +2,8 @@ import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from 'next-auth';
 
+import { sendMail } from '@/lib/email.server';
+import { numberWithCommas } from '@/lib/helper';
 import { prisma } from '@/lib/prisma';
 import requireSession from '@/lib/require-session.server';
 
@@ -29,6 +31,37 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: User) {
           userId: user.id,
         })),
       });
+
+      const users = await prisma.user.findMany();
+
+      for (const destinationUserId of destinationUserIdList) {
+        const subject = `Request uang dari ${user.name}`;
+        const text = `Hai! ${
+          user.name
+        } baru saja melakukan request uang sebesar Rp ${numberWithCommas(
+          amountPerPerson
+        )} dengan keterangan: ${description}. Silakan melakukan pembayaran di https://lhoks.thcl.dev/trx/${
+          user.id
+        }`;
+        const html = `
+          <p>Hai! <strong>${
+            user.name
+          }</strong> baru saja melakukan request uang sebesar <strong>
+            Rp ${numberWithCommas(amountPerPerson)}
+          </strong> dengan keterangan: <strong>${description}</strong>. Silakan melakukan pembayaran di <a href='https://lhoks.thcl.dev/trx/${
+          user.id
+        }'>link berikut.</a></p>
+        `;
+
+        sendMail({
+          to: users.find((user) => user.id === destinationUserId)
+            ?.email as string,
+          subject,
+          text,
+          html,
+        });
+      }
+
       return res.status(201).json({ message: 'Transactions created' });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientUnknownRequestError)
