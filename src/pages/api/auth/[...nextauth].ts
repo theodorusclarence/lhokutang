@@ -44,4 +44,5 @@ const emailWhitelist = [
   'stevearmando@gmail.com',
   'radityarobert@gmail.com',
   'sihombingcharminuel@gmail.com',
+  'ryan.ardhana27@gmail.com',
 ];
