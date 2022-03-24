@@ -30,7 +30,7 @@ async function create(req: NextApiRequest, res: NextApiResponse, user: User) {
 
       let text, html, subject;
 
-      if (description === 'Pelunasan') {
+      if (description.startsWith('Pelunasan')) {
         subject = `Pelunasan dari ${user.name}`;
         text = `Hai! ${
           user.name

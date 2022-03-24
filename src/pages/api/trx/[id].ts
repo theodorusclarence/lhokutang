@@ -70,12 +70,11 @@ async function GetTransactions(req: NextApiRequest, res: NextApiResponse) {
           description,
           date,
           user,
-          type:
-            description === 'Pelunasan'
-              ? 'payment'
-              : user.id === userId
-              ? 'piutang'
-              : 'utang',
+          type: description.startsWith('Pelunasan')
+            ? 'payment'
+            : user.id === userId
+            ? 'piutang'
+            : 'utang',
         })
       );
 

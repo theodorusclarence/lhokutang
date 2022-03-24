@@ -12,6 +12,7 @@ import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/Input';
+import SelectInput from '@/components/forms/SelectInput';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import UserImage from '@/components/UserImage';
@@ -21,6 +22,7 @@ import { GetTransactionsApi } from '@/pages/api/trx/[id]';
 
 type BayarData = {
   amount: number;
+  method: string;
 };
 
 BayarPage.auth = true;
@@ -59,7 +61,7 @@ export default function BayarPage() {
     const postData = {
       amount: data.amount,
       destinationUserId: destinationUser?.id,
-      description: 'Pelunasan',
+      description: `Pelunasan via ${data.method}`,
       date: new Date().toISOString(),
     };
     toast
@@ -124,6 +126,13 @@ export default function BayarPage() {
                     valueAsNumber: true,
                   }}
                 />
+                <SelectInput id='method' label='Via apa?'>
+                  <option value='Shopee'>Shopee</option>
+                  <option value='Cash'>Cash</option>
+                  <option value='Gopay'>Gopay</option>
+                  <option value='OVO'>OVO</option>
+                  <option value='Bank Transfer'>Bank Transfer</option>
+                </SelectInput>
                 <div className='flex flex-wrap gap-4'>
                   <Button type='submit'>Submit</Button>
                 </div>

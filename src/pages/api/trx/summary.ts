@@ -26,7 +26,7 @@ async function summary(req: NextApiRequest, res: NextApiResponse, user: User) {
       let type: 'pay' | 'paid' | 'utang' | 'piutang';
       let destinationUser: string;
 
-      if (transaction.description === 'Pelunasan') {
+      if (transaction.description.startsWith('Pelunasan')) {
         if (transaction.userId === user.id) {
           // We pay to the user
           type = 'pay';
