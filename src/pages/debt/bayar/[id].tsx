@@ -8,6 +8,7 @@ import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
 import { numberWithCommas } from '@/lib/helper';
+import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Button from '@/components/buttons/Button';
@@ -32,6 +33,8 @@ export default function BayarPage() {
   const router = useRouter();
   const userId = router.query.id;
   //#endregion  //*======== Get Route Param ===========
+
+  const isLoading = useLoadingToast();
 
   const { data: session } = useSession();
 
@@ -134,7 +137,9 @@ export default function BayarPage() {
                   <option value='Bank Transfer'>Bank Transfer</option>
                 </SelectInput>
                 <div className='flex flex-wrap gap-4'>
-                  <Button type='submit'>Submit</Button>
+                  <Button isLoading={isLoading} type='submit'>
+                    Submit
+                  </Button>
                 </div>
               </form>
             </FormProvider>
