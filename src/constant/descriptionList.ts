@@ -8,4 +8,7 @@ export const descriptions = [
   'Bedjo',
   'Xenteur',
   'Joder',
+  'Teh Poci',
+  'Soto Abas',
+  'Laundry',
 ];
