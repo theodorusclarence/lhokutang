@@ -1,20 +1,24 @@
 import * as React from 'react';
 
+import clsxm from '@/lib/clsxm';
+
 import NextImage from '@/components/NextImage';
 
 export default function UserImage({
   image,
-  size,
+  className,
 }: {
   image?: string | null;
-  size: string;
+  className?: string;
 }) {
   return (
     <>
       {image ? (
         <NextImage
-          className='overflow-hidden rounded-full border-2 border-gray-300'
-          style={{ width: size, height: size }}
+          className={clsxm(
+            'overflow-hidden rounded-full border-2 border-gray-300',
+            className
+          )}
           src={image}
           width={250}
           height={250}
@@ -22,8 +26,10 @@ export default function UserImage({
         />
       ) : (
         <div
-          style={{ width: size, height: size }}
-          className='h-[48px] w-[48px] overflow-hidden rounded-full border-2 border-gray-300 bg-gray-100'
+          className={clsxm(
+            'h-[48px] w-[48px] overflow-hidden rounded-full border-2 border-gray-300 bg-gray-100',
+            className
+          )}
         />
       )}
     </>
