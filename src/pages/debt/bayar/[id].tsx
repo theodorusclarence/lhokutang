@@ -88,7 +88,7 @@ export default function BayarPage() {
           <div className='layout min-h-screen py-4'>
             <p>Transaksi dengan: </p>
             <header className='mt-2 flex items-center gap-3'>
-              <UserImage size='48px' image={destinationUser?.image} />
+              <UserImage className='h-12 w-12' image={destinationUser?.image} />
               <div>
                 <h2 className='h4'>{destinationUser?.name ?? 'Loading...'}</h2>
                 <p>{destinationUser?.email ?? ''}</p>

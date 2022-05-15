@@ -33,7 +33,7 @@ export default function UserCheckboxes({
                   htmlFor={`${id}.[${user.id}]`}
                   className='flex select-none items-center gap-2 font-medium text-gray-700'
                 >
-                  <UserImage size='25px' image={user.image} />
+                  <UserImage className='h-6 w-6' image={user.image} />
                   <span>{user.name}</span>
                 </label>
               </div>

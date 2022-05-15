@@ -56,7 +56,7 @@ export default function UserTransactionPage() {
           <div className='layout min-h-screen py-4'>
             <p>Transaksi dengan: </p>
             <header className='mt-2 flex items-center gap-3'>
-              <UserImage size='48px' image={destinationUser?.image} />
+              <UserImage className='h-12 w-12' image={destinationUser?.image} />
               <div>
                 <h2 className='h4'>{destinationUser?.name ?? 'Loading...'}</h2>
                 <p className='flex items-center gap-1 text-gray-700'>
@@ -92,7 +92,7 @@ export default function UserTransactionPage() {
                   <li key={id} className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
                       <UserImage
-                        size='35px'
+                        className='h-[35px] w-[35px]'
                         image={
                           type === 'utang' ||
                           (type === 'payment' &&
