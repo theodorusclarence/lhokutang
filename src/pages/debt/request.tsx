@@ -61,6 +61,7 @@ export default function DebtPage() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
+        toast.dismiss();
         router.push(`/trx/${data.destinationUserId}`);
       });
   };
@@ -77,16 +78,33 @@ export default function DebtPage() {
       loading: 'getting user data',
     }
   );
-  const users: UserSelectPeople[] = userData?.users
-    ? userData.users
-        .map((user) => ({
-          id: user.id,
-          name: user.name ? user.name : (user.email as string),
-          image: user.image,
-        }))
-        .filter((user) => user.id !== sessionData?.user?.id)
-    : [];
+  const users: UserSelectPeople[] = React.useMemo(
+    () =>
+      userData?.users
+        ? userData.users
+            .map((user) => ({
+              id: user.id,
+              name: user.name ? user.name : (user.email as string),
+              image: user.image,
+            }))
+            .filter((user) => user.id !== sessionData?.user?.id)
+        : [],
+    [sessionData?.user?.id, userData]
+  );
   //#endregion  //*======== User Select ===========
+
+  //#region  //*=========== Auto Select From Query ===========
+  React.useEffect(() => {
+    const { to } = router.query;
+    if (to) {
+      const user = users.find((user) => user.id === to);
+      if (user) {
+        setUserSelected(user);
+        setValue('destinationUserId', user.id, { shouldValidate: true });
+      }
+    }
+  }, [router.query, setValue, users]);
+  //#endregion  //*======== Auto Select From Query ===========
 
   return (
     <Layout>

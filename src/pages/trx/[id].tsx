@@ -12,6 +12,7 @@ import { numberWithCommas } from '@/lib/helper';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
 import Layout from '@/components/layout/Layout';
+import ArrowLink from '@/components/links/ArrowLink';
 import PrimaryLink from '@/components/links/PrimaryLink';
 import Seo from '@/components/Seo';
 import UserImage from '@/components/UserImage';
@@ -65,6 +66,13 @@ export default function UserTransactionPage() {
                 </p>
               </div>
             </header>
+            <ArrowLink
+              className='mt-2'
+              as={PrimaryLink}
+              href={`/debt/request?to=${userId}`}
+            >
+              💸 Request Uang
+            </ArrowLink>
 
             <h1 className='h3 mt-8 flex items-center gap-2 text-gray-800'>
               <span>
@@ -77,14 +85,16 @@ export default function UserTransactionPage() {
                     )} 🤑`}
               </span>
             </h1>
-            {total.status === 'bayar' && (
-              <PrimaryLink
-                className='mt-2'
-                href={`/debt/bayar/${destinationUser?.id}`}
-              >
-                Bayar Sekarang
-              </PrimaryLink>
-            )}
+            <div className='mt-2 space-x-4'>
+              {total.status === 'bayar' && (
+                <ArrowLink
+                  as={PrimaryLink}
+                  href={`/debt/bayar/${destinationUser?.id}`}
+                >
+                  💵 Bayar Sekarang
+                </ArrowLink>
+              )}
+            </div>
 
             <ul className='mt-6 space-y-3'>
               {transactions.map(
