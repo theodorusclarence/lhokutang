@@ -32,6 +32,8 @@ export default function ListPage() {
     (user) => user.id === sessionData?.user.id
   );
 
+  const totalDebt = users.reduce((total, u) => total + u.amount, 0);
+
   return (
     <Layout>
       <Seo templateTitle='List' />
@@ -39,8 +41,27 @@ export default function ListPage() {
       <main>
         <section className=''>
           <div className='layout min-h-screen py-4'>
-            <h1>Penghuni</h1>
-
+            <div className='text-center'>
+              <h1 className='h3'>Kondisi Perutangan Anda</h1>
+              <p
+                className={clsxm('text-lg font-medium text-green-600', {
+                  'text-green-600': totalDebt > 0,
+                  'text-red-600': totalDebt < 0,
+                })}
+              >
+                {totalDebt ? (
+                  <span>
+                    {totalDebt > 0 ? '🤑' : '😭'}{' '}
+                    {totalDebt > 0
+                      ? numberWithCommas(totalDebt)
+                      : numberWithCommas(-totalDebt) ?? 0}
+                  </span>
+                ) : (
+                  '👍 0'
+                )}
+              </p>
+            </div>
+            <h2 className='h4 mt-8'>Penghuni</h2>
             {currentUser?.phoneNumber === null && (
               <div className='mt-1 text-gray-700'>
                 <p>
@@ -49,7 +70,6 @@ export default function ListPage() {
                 </p>
               </div>
             )}
-
             {users.map((user) => (
               <div key={user.id} className='mt-4 flex items-center gap-3'>
                 {user.image ? (
