@@ -14,6 +14,7 @@ export type GetTransactionsApi = {
     user: User;
   }[];
   total: number;
+  collapseIndex: number;
 };
 
 export default requireSession(GetTransactions);
@@ -78,16 +79,30 @@ async function GetTransactions(req: NextApiRequest, res: NextApiResponse) {
         })
       );
 
-      const total = transactions.reduce(
-        (acc, { amount, type, user }) =>
-          type === 'utang' ||
-          (type === 'payment' && user.id === destinationUserId)
-            ? acc + amount
-            : acc - amount,
-        0
-      );
+      let collapseIndex = 0;
+      const total = transactions
+        .slice()
+        .reverse()
+        .reduce((acc, { amount, type, user }, i) => {
+          const tempAcc =
+            type === 'utang' ||
+            (type === 'payment' && user.id === destinationUserId)
+              ? acc + amount
+              : acc - amount;
 
-      const transactionReturn: GetTransactionsApi = { transactions, total };
+          if (tempAcc === 0) {
+            collapseIndex = i;
+          }
+
+          return tempAcc;
+        }, 0);
+
+      const transactionReturn: GetTransactionsApi = {
+        transactions,
+        total,
+        // -1 to account for index length
+        collapseIndex: transactions.length - collapseIndex - 1,
+      };
 
       return res.status(200).json(transactionReturn);
     } catch (error) {
