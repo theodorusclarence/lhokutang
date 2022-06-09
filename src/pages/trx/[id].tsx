@@ -42,6 +42,7 @@ export default function UserTransactionPage() {
   );
   const transactions = transactionData?.transactions ?? [];
 
+  const collapseIndex = transactionData?.collapseIndex ?? null;
   const _total = transactionData?.total ?? 0;
   const total = {
     amount: _total ?? 0,
@@ -98,42 +99,51 @@ export default function UserTransactionPage() {
 
             <ul className='mt-6 space-y-3'>
               {transactions.map(
-                ({ id, description, type, amount, date, user }) => (
-                  <li key={id} className='flex items-center justify-between'>
-                    <div className='flex items-center gap-2'>
-                      <UserImage
-                        className='h-[35px] w-[35px]'
-                        image={
-                          type === 'utang' ||
-                          (type === 'payment' &&
-                            user.id === destinationUser?.id)
-                            ? destinationUser?.image
-                            : session?.user.image
-                        }
-                      />
-                      <div>
-                        <h3 className='h4 font-medium'>{description}</h3>
-                        <p className='text-sm text-gray-600'>
-                          {format(
-                            new Date(date),
-                            DATE_FORMAT.FULL_DATE_HOUR_MINUTE
-                          )}
-                        </p>
+                ({ id, description, type, amount, date, user }, i) => (
+                  <React.Fragment key={id}>
+                    {i === collapseIndex && (
+                      <div className='flex items-center gap-2 text-orange-400'>
+                        <div className='h-0.5 flex-grow bg-orange-300' />
+                        <span className='text-xs font-medium'>LUNAS</span>
+                        <div className='h-0.5 flex-grow bg-orange-300' />
                       </div>
-                    </div>
-                    <p
-                      className={clsx(
-                        'text-right',
-                        type === 'utang'
-                          ? 'text-red-500'
-                          : type === 'payment'
-                          ? 'text-yellow-600'
-                          : 'text-green-500'
-                      )}
-                    >
-                      {numberWithCommas(amount)}
-                    </p>
-                  </li>
+                    )}
+                    <li className='flex items-center justify-between'>
+                      <div className='flex items-center gap-2'>
+                        <UserImage
+                          className='h-[35px] w-[35px]'
+                          image={
+                            type === 'utang' ||
+                            (type === 'payment' &&
+                              user.id === destinationUser?.id)
+                              ? destinationUser?.image
+                              : session?.user.image
+                          }
+                        />
+                        <div>
+                          <h3 className='h4 font-medium'>{description}</h3>
+                          <p className='text-sm text-gray-600'>
+                            {format(
+                              new Date(date),
+                              DATE_FORMAT.FULL_DATE_HOUR_MINUTE
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                      <p
+                        className={clsx(
+                          'text-right',
+                          type === 'utang'
+                            ? 'text-red-500'
+                            : type === 'payment'
+                            ? 'text-yellow-600'
+                            : 'text-green-500'
+                        )}
+                      >
+                        {numberWithCommas(amount)}
+                      </p>
+                    </li>
+                  </React.Fragment>
                 )
               )}
             </ul>
