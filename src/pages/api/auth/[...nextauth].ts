@@ -2,8 +2,9 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-import emailWhitelist from '@/lib/email-whitelist';
 import { prisma } from '@/lib/prisma';
+
+import { emailWhitelist } from '@/constant/email-whitelist';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),

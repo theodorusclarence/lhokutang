@@ -1,4 +1,4 @@
-const emailWhitelist = [
+export const emailWhitelist = [
   'ppdbultimate@gmail.com',
   'theodorusclarence@gmail.com',
   'adhwamaharika@gmail.com',
@@ -19,4 +19,9 @@ const emailWhitelist = [
   'williamhadiwijaya111@gmail.com',
 ];
 
-export default emailWhitelist;
+export const alumnusEmail = [
+  'ppdbultimate@gmail.com',
+  'kanda.wibisanan@gmail.com',
+  'stevearmando@gmail.com',
+  'adhwamaharika@gmail.com',
+];

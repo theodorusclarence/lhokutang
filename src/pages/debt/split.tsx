@@ -60,6 +60,7 @@ export default function DebtSplit() {
           id: user.id,
           name: user.name ? user.name : (user.email as string),
           image: user.image,
+          email: user.email,
         }))
         .filter((user) => user.id !== sessionData?.user?.id)
     : [];

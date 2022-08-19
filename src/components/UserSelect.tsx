@@ -9,12 +9,15 @@ import clsxm from '@/lib/clsxm';
 
 import NextImage from '@/components/NextImage';
 
+import { alumnusEmail } from '@/constant/email-whitelist';
+
 import Input from './forms/Input';
 
 export type UserSelectPeople = {
   id: string;
   name: string;
   image?: string | null;
+  email?: string | null;
 };
 
 type UserSelectProps = {
@@ -34,6 +37,13 @@ export default function UserSelect({
     formState: { errors },
     setValue,
   } = useFormContext();
+
+  const users = people.filter(
+    (user) => !alumnusEmail.includes(user.email ?? '')
+  );
+  const alumnus = people.filter((user) =>
+    alumnusEmail.includes(user.email ?? '')
+  );
 
   return (
     <Listbox
@@ -93,54 +103,14 @@ export default function UserSelect({
               leaveTo='opacity-0'
             >
               <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                {people.map((person) => (
-                  <Listbox.Option
-                    key={person.id}
-                    className={({ active }) =>
-                      clsx(
-                        active ? 'bg-primary-600 text-white' : 'text-gray-900',
-                        'relative cursor-default select-none py-2 pl-3 pr-9'
-                      )
-                    }
-                    value={person}
-                  >
-                    {({ selected, active }) => (
-                      <>
-                        <div className='flex items-center'>
-                          {person?.image ? (
-                            <NextImage
-                              className='h-6 w-6 flex-shrink-0 overflow-hidden rounded-full'
-                              src={person.image}
-                              width={250}
-                              height={250}
-                              alt='Google Icon'
-                            />
-                          ) : (
-                            <div className='h-6 w-6 flex-shrink-0 rounded-full bg-gray-100' />
-                          )}
-                          <span
-                            className={clsx(
-                              selected ? 'font-semibold' : 'font-normal',
-                              'ml-3 block truncate'
-                            )}
-                          >
-                            {person.name}
-                          </span>
-                        </div>
-
-                        {selected ? (
-                          <span
-                            className={clsx(
-                              active ? 'text-white' : 'text-primary-600',
-                              'absolute inset-y-0 right-0 flex items-center pr-4'
-                            )}
-                          >
-                            <HiCheck className='h-5 w-5' aria-hidden='true' />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Listbox.Option>
+                {users.map((person) => (
+                  <UserSelectOption key={person.id} person={person} />
+                ))}
+                <div className='mt-2 px-3 pb-1 text-xs font-medium uppercase text-gray-500'>
+                  Alumni
+                </div>
+                {alumnus.map((person) => (
+                  <UserSelectOption key={person.id} person={person} />
                 ))}
               </Listbox.Options>
             </Transition>
@@ -158,3 +128,54 @@ export default function UserSelect({
     </Listbox>
   );
 }
+
+const UserSelectOption = ({ person }: { person: UserSelectPeople }) => {
+  return (
+    <Listbox.Option
+      className={({ active }) =>
+        clsx(
+          active ? 'bg-primary-600 text-white' : 'text-gray-900',
+          'relative cursor-default select-none py-2 pl-3 pr-9'
+        )
+      }
+      value={person}
+    >
+      {({ selected, active }) => (
+        <>
+          <div className='flex items-center'>
+            {person?.image ? (
+              <NextImage
+                className='h-6 w-6 flex-shrink-0 overflow-hidden rounded-full'
+                src={person.image}
+                width={250}
+                height={250}
+                alt='Google Icon'
+              />
+            ) : (
+              <div className='h-6 w-6 flex-shrink-0 rounded-full bg-gray-100' />
+            )}
+            <span
+              className={clsx(
+                selected ? 'font-semibold' : 'font-normal',
+                'ml-3 block truncate'
+              )}
+            >
+              {person.name}
+            </span>
+          </div>
+
+          {selected ? (
+            <span
+              className={clsx(
+                active ? 'text-white' : 'text-primary-600',
+                'absolute inset-y-0 right-0 flex items-center pr-4'
+              )}
+            >
+              <HiCheck className='h-5 w-5' aria-hidden='true' />
+            </span>
+          ) : null}
+        </>
+      )}
+    </Listbox.Option>
+  );
+};
