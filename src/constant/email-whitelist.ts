@@ -17,6 +17,7 @@ export const emailWhitelist = [
   'dega.ad@gmail.com',
   'rayhanalifa@googlemail.com',
   'williamhadiwijaya111@gmail.com',
+  'satriaadam04@gmail.com',
 ];
 
 export const alumnusEmail = [
