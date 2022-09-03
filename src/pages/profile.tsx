@@ -17,6 +17,7 @@ import { REGEX } from '@/constant/regex';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
 type ProfileData = {
+  name: string;
   phoneNumber: string;
 };
 
@@ -41,16 +42,17 @@ export default function ProfilePage() {
   );
   React.useEffect(() => {
     setValue('phoneNumber', currentUser?.phoneNumber ?? '');
-  }, [currentUser?.phoneNumber, setValue]);
+    setValue('name', currentUser?.name ?? '');
+  }, [currentUser?.phoneNumber, currentUser?.name, setValue]);
   //#endregion  //*======== Load Default Values ===========
 
   //#region  //*=========== Form Submit ===========
   const onSubmit: SubmitHandler<ProfileData> = (data) => {
     toast
-      .promise(axiosClient.post('/api/user/phone', data), {
+      .promise(axiosClient.post('/api/user/edit', data), {
         ...DEFAULT_TOAST_MESSAGE,
-        loading: 'Mengubah nomor telepon..',
-        success: 'Nomor berhasil diubah',
+        loading: 'Mengubah data profil..',
+        success: 'Profil berhasil diubah',
       })
       .then(() => {
         router.push('/');
@@ -70,6 +72,14 @@ export default function ProfilePage() {
                 onSubmit={handleSubmit(onSubmit)}
                 className='mt-4 max-w-sm space-y-3'
               >
+                <Input
+                  label='Nama'
+                  id='name'
+                  placeholder='Masukkan nama'
+                  validation={{
+                    required: 'Nama harus diisi',
+                  }}
+                />
                 <Input
                   label='Nomor Telepon'
                   id='phoneNumber'

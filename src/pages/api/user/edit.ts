@@ -7,9 +7,14 @@ import requireSession from '@/lib/require-session.server';
 
 export default requireSession(phone);
 
+type RequestBody = {
+  phoneNumber: string;
+  name: string;
+};
+
 async function phone(req: NextApiRequest, res: NextApiResponse, user: User) {
   if (req.method === 'POST') {
-    const { phoneNumber } = req.body;
+    const { phoneNumber, name } = req.body as RequestBody;
 
     try {
       await prisma.user.update({
@@ -17,10 +22,11 @@ async function phone(req: NextApiRequest, res: NextApiResponse, user: User) {
           id: user.id,
         },
         data: {
-          phoneNumber: phoneNumber as string,
+          phoneNumber,
+          name,
         },
       });
-      return res.status(200).json({ message: 'Phone number updated' });
+      return res.status(200).json({ message: 'Profile updated' });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientUnknownRequestError)
         return res.status(500).send(error.message);
