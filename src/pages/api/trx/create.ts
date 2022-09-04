@@ -70,6 +70,7 @@ async function create(req: NextApiRequest, res: NextApiResponse, user: User) {
 
       sendMail({
         to: destinationUser?.email as string,
+        toName: destinationUser?.name as string,
         subject,
         text,
         html,
