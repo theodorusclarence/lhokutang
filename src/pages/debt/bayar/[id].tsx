@@ -8,6 +8,7 @@ import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
 import { numberWithCommas } from '@/lib/helper';
+import { trackEvent } from '@/lib/umami';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -74,6 +75,7 @@ export default function BayarPage() {
         success: 'Pembayaran berhasil dicatat',
       })
       .then(() => {
+        trackEvent('Bayar', 'click');
         router.push(`/trx/${destinationUser?.id}`);
       });
   };

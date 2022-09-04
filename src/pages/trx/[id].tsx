@@ -13,6 +13,7 @@ import useSWR from 'swr';
 import axiosClient from '@/lib/axios';
 import { DATE_FORMAT } from '@/lib/date';
 import { getFromLocalStorage, numberWithCommas } from '@/lib/helper';
+import { trackEvent } from '@/lib/umami';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 import useDialog from '@/hooks/useDialog';
 
@@ -72,6 +73,7 @@ export default function UserTransactionPage() {
           success: 'Transaksi berhasil dihapus',
         })
         .then(() => {
+          trackEvent('Hapus Transaksi', 'click');
           toast.dismiss();
           mutate();
         });
@@ -86,11 +88,15 @@ export default function UserTransactionPage() {
     );
     const description = window.prompt('Pesan untuk orang ini (opsional)');
     toast.promise(
-      axiosClient.post('/api/remind', {
-        userId: userId,
-        amount: -total.amount,
-        description,
-      }),
+      axiosClient
+        .post('/api/remind', {
+          userId: userId,
+          amount: -total.amount,
+          description,
+        })
+        .then(() => {
+          trackEvent('Remind', 'click');
+        }),
       {
         ...DEFAULT_TOAST_MESSAGE,
         loading: 'Mengirim email...',

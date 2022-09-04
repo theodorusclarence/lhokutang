@@ -8,6 +8,7 @@ import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
 import { cleanNumber, numberWithCommas } from '@/lib/helper';
+import { trackEvent } from '@/lib/umami';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -99,6 +100,7 @@ export default function DebtSplit() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
+        trackEvent('Split Bill', 'click');
         router.push(`/trx/${parsedData.destinationUserIdList[0]}`);
       });
   };

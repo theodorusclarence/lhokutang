@@ -8,6 +8,7 @@ import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
 import { cleanNumber } from '@/lib/helper';
+import { trackEvent } from '@/lib/umami';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 
@@ -61,6 +62,7 @@ export default function DebtPage() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
+        trackEvent('Request Uang', 'click');
         toast.dismiss();
         router.push(`/trx/${data.destinationUserId}`);
       });
