@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { User } from '@prisma/client';
 import clsx from 'clsx';
 import format from 'date-fns/format';
@@ -11,10 +12,11 @@ import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
 import { DATE_FORMAT } from '@/lib/date';
-import { numberWithCommas } from '@/lib/helper';
+import { getFromLocalStorage, numberWithCommas } from '@/lib/helper';
 import useWithToast from '@/hooks/toast/useSWRWithToast';
 import useDialog from '@/hooks/useDialog';
 
+import Button from '@/components/buttons/Button';
 import TextButton from '@/components/buttons/TextButton';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -77,6 +79,35 @@ export default function UserTransactionPage() {
   };
   //#endregion  //*======== Remove Item ===========
 
+  const onEmailClick = () => {
+    localStorage.setItem(
+      `@lhokutang/email-trx-${userId}`,
+      new Date().toISOString()
+    );
+    const description = window.prompt('Pesan untuk orang ini (opsional)');
+    toast.promise(
+      axiosClient.post('/api/remind', {
+        userId: destinationUser?.id,
+        amount: -total.amount,
+        description,
+      }),
+      {
+        ...DEFAULT_TOAST_MESSAGE,
+        loading: 'Mengirim email...',
+        success: 'Email berhasil dikirim',
+      }
+    );
+  };
+  // check if date is in 1 hour ago
+  const isAbleToSendEmail = () => {
+    const date = getFromLocalStorage(`@lhokutang/email-trx-${userId}`);
+    if (!date) return true;
+
+    const now = new Date();
+    const dateIn1HourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+    return new Date(date) < dateIn1HourAgo;
+  };
+
   return (
     <Layout>
       <Seo templateTitle='UserTransaction' />
@@ -123,6 +154,24 @@ export default function UserTransactionPage() {
                   💵 Bayar Sekarang
                 </ArrowLink>
               )}
+              {total.status === 'minta' &&
+                (isAbleToSendEmail() ? (
+                  <Button
+                    onClick={onEmailClick}
+                    variant='primary'
+                    className='text-sm'
+                  >
+                    Kirim email minta uang
+                  </Button>
+                ) : (
+                  <p className='text-sm'>
+                    Anda telah mengirim email pada{' '}
+                    {new Date(
+                      getFromLocalStorage(`@lhokutang/email-trx-${userId}`)!
+                    ).toLocaleTimeString()}
+                    , tunggu 1 jam untuk mengirim kembali
+                  </p>
+                ))}
             </div>
 
             <ul className='mt-6 space-y-3'>
