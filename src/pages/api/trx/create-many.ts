@@ -56,6 +56,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse, user: User) {
         sendMail({
           to: users.find((user) => user.id === destinationUserId)
             ?.email as string,
+          toName: users.find((user) => user.id === destinationUserId)
+            ?.name as string,
           subject,
           text,
           html,

@@ -31,3 +31,10 @@ export function numberWithCommas(x: number): string {
 export function cleanNumber(str: string): number {
   return Number(str?.replace(/[^0-9]+/g, ''));
 }
+
+export function getFromLocalStorage(key: string) {
+  if (typeof localStorage !== 'undefined') {
+    return localStorage.getItem(key);
+  }
+  return null;
+}
