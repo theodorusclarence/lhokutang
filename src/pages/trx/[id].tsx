@@ -87,7 +87,7 @@ export default function UserTransactionPage() {
     const description = window.prompt('Pesan untuk orang ini (opsional)');
     toast.promise(
       axiosClient.post('/api/remind', {
-        userId: destinationUser?.id,
+        userId: userId,
         amount: -total.amount,
         description,
       }),

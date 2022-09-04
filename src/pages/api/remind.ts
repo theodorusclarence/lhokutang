@@ -8,12 +8,11 @@ import requireSession from '@/lib/require-session.server';
 
 export default requireSession(email);
 async function email(req: NextApiRequest, res: NextApiResponse, user: User) {
-  const { destinationUserId, amount, description } = req.body;
+  const { userId, amount, description } = req.body;
   if (req.method === 'POST') {
     const destinationUser = await prisma.user.findFirst({
-      where: { id: destinationUserId },
+      where: { id: userId },
     });
-
     const subject = `Permintaan pelunasan dari ${user.name}`;
     const text = `Hai! ${
       user.name
