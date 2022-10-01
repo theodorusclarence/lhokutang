@@ -16,6 +16,7 @@ import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/Input';
 import UserCheckboxes from '@/components/forms/UserCheckboxes';
 import Layout from '@/components/layout/Layout';
+import PrimaryLink from '@/components/links/PrimaryLink';
 import Seo from '@/components/Seo';
 import { UserSelectPeople } from '@/components/UserSelect';
 
@@ -113,8 +114,16 @@ export default function DebtSplit() {
       <main>
         <section className=''>
           <div className='layout min-h-screen py-4'>
-            <h1>Split Bill</h1>
-            <p className='mt-1 text-gray-700'>Bagi" pesanan dengan mudah</p>
+            <h1>Simple Split Bill</h1>
+            <p className='mt-1 text-gray-700'>
+              Bagi" pesanan secara <strong>rata</strong> dengan mudah
+            </p>
+            <p className='mt-1 text-sm text-gray-700'>
+              Nominal makanan beda-beda? Pake{' '}
+              <PrimaryLink href='/debt/split-discount'>
+                Split Discount
+              </PrimaryLink>
+            </p>
 
             <FormProvider {...methods}>
               <form

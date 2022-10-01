@@ -15,7 +15,12 @@ import NextImage from '@/components/NextImage';
 const navigation = [
   { name: 'Lihat (Pi)utang', href: '/list', role: 'authenticated' },
   { name: 'Request Uang', href: '/debt/request', role: 'authenticated' },
-  { name: 'Split Bill', href: '/debt/split', role: 'authenticated' },
+  { name: 'Simple Split', href: '/debt/split', role: 'authenticated' },
+  {
+    name: 'Complex Split',
+    href: '/debt/split-discount',
+    role: 'authenticated',
+  },
   // { name: 'Lihat Penghuni', href: '/list', role: 'unauthenticated' },
 ];
 
@@ -66,7 +71,7 @@ export default function Header() {
           </div>
         </div>
         {/* Mobile */}
-        <div className='flex flex-wrap justify-center space-x-6 py-4 lg:hidden'>
+        <div className='flex flex-wrap justify-center gap-x-6 gap-y-2 py-4 lg:hidden'>
           {navigation.map((link) => (
             <UnstyledLink
               key={link.name}
