@@ -39,7 +39,7 @@ export default function ListPage() {
     (user) => user.id === sessionData?.user.id
   );
 
-  const totalDebt = users.reduce((total, u) => total + u.amount, 0);
+  const totalDebt = _users.reduce((total, u) => total + u.amount, 0);
 
   return (
     <Layout>
