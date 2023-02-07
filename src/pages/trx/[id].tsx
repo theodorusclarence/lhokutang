@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import toast from 'react-hot-toast';
-import { HiOutlineTrash, HiPhone } from 'react-icons/hi';
+import { HiOutlineMail, HiOutlineTrash, HiPhone } from 'react-icons/hi';
 import useSWR from 'swr';
 
 import axiosClient from '@/lib/axios';
@@ -21,6 +21,7 @@ import Button from '@/components/buttons/Button';
 import TextButton from '@/components/buttons/TextButton';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
+import ButtonLink from '@/components/links/ButtonLink';
 import PrimaryLink from '@/components/links/PrimaryLink';
 import Seo from '@/components/Seo';
 import UserImage from '@/components/UserImage';
@@ -82,11 +83,14 @@ export default function UserTransactionPage() {
   //#endregion  //*======== Remove Item ===========
 
   const onEmailClick = () => {
+    const description = window.prompt('Pesan untuk orang ini (opsional)');
+    if (description === null) return;
+
     localStorage.setItem(
       `@lhokutang/email-trx-${userId}`,
       new Date().toISOString()
     );
-    const description = window.prompt('Pesan untuk orang ini (opsional)');
+
     toast.promise(
       axiosClient
         .post('/api/remind', {
@@ -132,13 +136,13 @@ export default function UserTransactionPage() {
                 </p>
               </div>
             </header>
-            <ArrowLink
+            <ButtonLink
               className='mt-2'
-              as={PrimaryLink}
+              variant='outline'
               href={`/debt/request?to=${userId}`}
             >
-              💸 Request Uang
-            </ArrowLink>
+              <span className='mr-2'>💸</span> Request Uang
+            </ButtonLink>
 
             <h1 className='h3 mt-8 flex items-center gap-2 text-gray-800'>
               <span>
@@ -164,9 +168,10 @@ export default function UserTransactionPage() {
                 (isAbleToSendEmail() ? (
                   <Button
                     onClick={onEmailClick}
-                    variant='primary'
+                    variant='light'
                     className='text-sm'
                   >
+                    <HiOutlineMail className='mr-1 inline-block' />
                     Kirim email minta uang
                   </Button>
                 ) : (
