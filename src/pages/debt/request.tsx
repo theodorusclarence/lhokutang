@@ -18,7 +18,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import UserSelect, { UserSelectPeople } from '@/components/UserSelect';
 
-import { descriptions } from '@/constant/descriptionList';
+import { FOOD_LISTS } from '@/constant/food-lists';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
 type RequestData = {
@@ -155,7 +155,7 @@ export default function DebtPage() {
                   list='description-list'
                 />
                 <datalist id='description-list'>
-                  {descriptions?.map((description) => (
+                  {FOOD_LISTS?.map((description) => (
                     <option value={description} key={description} />
                   ))}
                 </datalist>

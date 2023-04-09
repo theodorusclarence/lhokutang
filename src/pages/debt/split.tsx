@@ -20,7 +20,7 @@ import PrimaryLink from '@/components/links/PrimaryLink';
 import Seo from '@/components/Seo';
 import { UserSelectPeople } from '@/components/UserSelect';
 
-import { descriptions } from '@/constant/descriptionList';
+import { FOOD_LISTS } from '@/constant/food-lists';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 import { CreateManyBody } from '@/pages/api/trx/create-many';
 
@@ -155,7 +155,7 @@ export default function DebtSplit() {
                   list='description-list'
                 />
                 <datalist id='description-list'>
-                  {descriptions?.map((description) => (
+                  {FOOD_LISTS?.map((description) => (
                     <option value={description} key={description} />
                   ))}
                 </datalist>

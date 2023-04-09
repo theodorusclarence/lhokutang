@@ -22,7 +22,7 @@ import Seo from '@/components/Seo';
 import UserImage from '@/components/UserImage';
 import { UserSelectPeople } from '@/components/UserSelect';
 
-import { descriptions } from '@/constant/descriptionList';
+import { FOOD_LISTS } from '@/constant/food-lists';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 import { CreateManyByIDBody } from '@/pages/api/trx/create-many-by-id';
 
@@ -222,7 +222,7 @@ export default function SplitDiscount() {
                   })}
 
                 <datalist id='description-list'>
-                  {descriptions?.map((description) => (
+                  {FOOD_LISTS?.map((description) => (
                     <option value={description} key={description} />
                   ))}
                 </datalist>

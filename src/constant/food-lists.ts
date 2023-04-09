@@ -1,4 +1,4 @@
-export const descriptions = [
+export const FOOD_LISTS = [
   'Bu Lala',
   'Kane',
   'Mbak Lis',
