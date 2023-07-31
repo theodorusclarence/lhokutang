@@ -27,7 +27,7 @@ class MyDocument extends Document {
             async
             defer
             data-website-id='a1aadba5-2dbc-4d2e-8915-fdefefc0d330'
-            src='https://umami.thcl.dev/umami.js'
+            src='https://umami.thcl.dev/script.js'
             data-domains='lhoks.thcl.dev'
           />
         </Head>
