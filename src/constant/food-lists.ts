@@ -25,4 +25,10 @@ export const FOOD_LISTS = [
   'Cak Rozi',
   'Djayaraya',
   'Ngelalap',
+  'Bangjo',
+  'Pak Ndut',
+  'Warjo',
+  'Ayam Ibu',
+  'Warung Jakarta',
+  'Pawon Chef Rudy',
 ];
