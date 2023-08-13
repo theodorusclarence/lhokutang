@@ -2124,10 +2124,10 @@
   dependencies:
     "@types/jest" "*"
 
-"@types/umami@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@types/umami/-/umami-0.1.0.tgz#bf76780c8b60183f35a910db34228627d410a655"
-  integrity sha512-nsrcnBdKXTP/koCwL3c+ywQG0lk+uqNo74oIe0FHC109aO4vZoXL0eSQqkUdWa9Hwc3ssFgJINBBCe0MZVYUwg==
+"@types/umami@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/umami/-/umami-0.1.2.tgz#b98fc0cd3e86ec94ac723a33f58c5ce71e531949"
+  integrity sha512-SDixKojpy1Ryh9Q6BsqIilezh6yxdIa4fUSY30NqQM8xEgnETrFzfWZSaov37Rv4+yEkfiuObgyfkB7f+jrkmQ==
 
 "@types/yargs-parser@*":
   version "20.2.1"

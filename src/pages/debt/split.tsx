@@ -101,8 +101,16 @@ export default function DebtSplit() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
-        trackEvent('Split Bill', 'click');
-        router.push(`/trx/${parsedData.destinationUserIdList[0]}`);
+        trackEvent('Split Bill', {
+          type: 'click',
+          user: sessionData?.user.name ?? '',
+          to: parsedData.destinationUserIdList
+            .map(
+              (id) => userData?.users.find((user) => user.id === id)?.name ?? ''
+            )
+            .join(', '),
+        });
+        router.replace(`/trx/${parsedData.destinationUserIdList[0]}`);
       });
   };
   //#endregion  //*======== Form Submit ===========

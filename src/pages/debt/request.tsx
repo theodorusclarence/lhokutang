@@ -62,9 +62,15 @@ export default function DebtPage() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
-        trackEvent('Request Uang', 'click');
+        trackEvent('Request Uang', {
+          type: 'click',
+          user: sessionData?.user.name ?? '',
+          to:
+            userData?.users.find((user) => user.id === data.destinationUserId)
+              ?.name ?? '',
+        });
         toast.dismiss();
-        router.push(`/trx/${data.destinationUserId}`);
+        router.replace(`/trx/${data.destinationUserId}`);
       });
   };
   //#endregion  //*======== Form Submit ===========

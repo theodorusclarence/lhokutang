@@ -75,8 +75,12 @@ export default function BayarPage() {
         success: 'Pembayaran berhasil dicatat',
       })
       .then(() => {
-        trackEvent('Bayar', 'click');
-        router.push(`/trx/${destinationUser?.id}`);
+        trackEvent('Bayar', {
+          type: 'click',
+          user: session?.user.name ?? '',
+          to: destinationUser?.name ?? '',
+        });
+        router.replace(`/trx/${destinationUser?.id}`);
       });
   };
   //#endregion  //*======== Form Submit ===========

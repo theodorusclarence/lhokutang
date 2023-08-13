@@ -125,8 +125,16 @@ export default function SplitDiscount() {
         success: 'Request uang berhasil dikirim',
       })
       .then(() => {
-        trackEvent('Split Bill', 'click');
-        router.push(`/trx/${parsedData.transactionData[0].id}`);
+        trackEvent('Split Bill', {
+          type: 'click',
+          user: sessionData?.user.name ?? '',
+          to: selectedUserIds
+            .map(
+              (id) => userData?.users.find((user) => user.id === id)?.name ?? ''
+            )
+            .join(', '),
+        });
+        router.replace(`/trx/${parsedData.transactionData[0].id}`);
       });
   };
   //#endregion  //*======== Form Submit ===========

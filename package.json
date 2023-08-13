@@ -58,7 +58,7 @@
     "@types/react": "^17.0.39",
     "@types/react-datepicker": "^4.3.4",
     "@types/tailwindcss": "^2.2.4",
-    "@types/umami": "^0.1.0",
+    "@types/umami": "^0.1.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.4.2",

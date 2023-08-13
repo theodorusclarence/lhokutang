@@ -74,7 +74,10 @@ export default function UserTransactionPage() {
           success: 'Transaksi berhasil dihapus',
         })
         .then(() => {
-          trackEvent('Hapus Transaksi', 'click');
+          trackEvent('Hapus Transaksi', {
+            type: 'click',
+            user: session?.user.name ?? '',
+          });
           toast.dismiss();
           mutate();
         });
@@ -99,7 +102,10 @@ export default function UserTransactionPage() {
           description,
         })
         .then(() => {
-          trackEvent('Remind', 'click');
+          trackEvent('Remind', {
+            type: 'click',
+            user: session?.user.name ?? '',
+          });
         }),
       {
         ...DEFAULT_TOAST_MESSAGE,
