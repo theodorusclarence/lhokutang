@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import { prisma } from '@/lib/prisma';
 
-import { emailWhitelist } from '@/constant/email-whitelist';
+import { alumnusEmail, emailWhitelist } from '@/constant/email-whitelist';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -25,7 +25,8 @@ export default NextAuth({
       if (!user.email) return false;
 
       // Only allow email within the whitelist
-      if (emailWhitelist.includes(user.email)) return true;
+      if ([...emailWhitelist, ...alumnusEmail].includes(user.email))
+        return true;
       return false;
     },
   },
